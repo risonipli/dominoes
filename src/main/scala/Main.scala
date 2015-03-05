@@ -11,21 +11,23 @@
 • Можно ли замкнуть костяшки в кольцо
 Кроме решения задачи, нужно реализовать Unit Test –ы и генератор “Базара” с заданным количеством костяшек N.
  Решение нужно реализовать на scala.
-
->Можно ли замкнуть костяшки в кольцо
-Предполагается цикл из четного числа элементов в графе
-
-> Можно ли выстроить костяшки в ряд
-Преполагается цикл из вершин степенью 2
-Либо граф у всех вершин степень 2, кроме двух, у них по 1
-
-
  */
 object Main {
   def main(args: Array[String]): Unit = {
     ArgsConfig.parser.parse(args, ArgsConfig.Config()) match {
       case Some(config) =>
-        println(config.tiles)
+        if (config.bazaarLength > 0) {
+          val bazaars = DominoesBox.getBazaars(config.bazaarLength)
+          bazaars.foreach(b => println(b))
+          println(s"Всего базаров ${bazaars.length}")
+        }
+
+        if (config.tiles.length > 0) {
+          val graph = new DominoesGraph(config.tiles)
+          val bazaarText = if (graph.isBazaar) " это базар"
+            else " это не базар"
+          println(config.tiles, bazaarText)
+        }
       case None =>
     }
   }
